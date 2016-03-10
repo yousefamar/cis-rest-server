@@ -59,5 +59,5 @@ mongodb.MongoClient.connect('mongodb://localhost:27017/api', function (err, db) 
 	app.get('/:method', function(req, res) { handle(req, res, req.query); });
 	app.post('/:method', function(req, res) { handle(req, res, req.body); });
 
-	app.listen(8080);
+	app.listen(process.env.PORT || 8080);
 });
