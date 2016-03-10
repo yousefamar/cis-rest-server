@@ -1,5 +1,5 @@
 # CIS REST Server
-A Databox Docker registry front-end, an instance of which is running at http://datashop.amar.io/.
+A Databox Docker registry front-end, an instance of which is running at http://cis.amar.io/.
 
 ## Installation
 	git clone https://github.com/yousefamar/rest-server.git
