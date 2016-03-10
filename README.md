@@ -17,7 +17,7 @@ Default port is 8080, but can be overridden using the PORT environment variable,
 
 All accept form-encoded POST or GET parameters and return JSON.
 
-### /api/write
+### /write
 
 Writes an entry to the DB.
 
@@ -29,7 +29,7 @@ Writes an entry to the DB.
 #### Response:
   - Empty response with status code 200 on success
 
-### /api/read-all
+### /read-all
 
 Lists all entries for a given group and sensor type.
 
@@ -40,7 +40,7 @@ Lists all entries for a given group and sensor type.
 #### Response:
   - An array of JSON-encoded DB entries
 
-### /api/read
+### /read
 
 Lists all entries for a given group and sensor type between a set time range [from, to].
 
