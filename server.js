@@ -21,7 +21,10 @@ mongodb.MongoClient.connect('mongodb://localhost:27017/api', function (err, db) 
 				};
 				db.collection(data.group).insert(entry);
 
-				res.writeHead(200);
+				res.writeHead(200, {
+					'Access-Control-Allow-Origin': req.headers.origin || '*',
+					'Content-Type': 'application/json'
+				});
 				res.end();
 				break;
 
@@ -30,6 +33,10 @@ mongodb.MongoClient.connect('mongodb://localhost:27017/api', function (err, db) 
 					if (err)
 						throw err;
 
+					res.writeHead(200, {
+						'Access-Control-Allow-Origin': req.headers.origin || '*',
+						'Content-Type': 'application/json'
+					});
 					res.end(JSON.stringify(docs));
 				});
 				break;
@@ -45,6 +52,10 @@ mongodb.MongoClient.connect('mongodb://localhost:27017/api', function (err, db) 
 					if (err)
 						throw err;
 
+					res.writeHead(200, {
+						'Access-Control-Allow-Origin': req.headers.origin || '*',
+						'Content-Type': 'application/json'
+					});
 					res.end(JSON.stringify(docs));
 				});
 				break;
