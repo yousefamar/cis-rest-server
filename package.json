@@ -1,0 +1,26 @@
+{
+  "name": "rest-server",
+  "version": "0.1.0",
+  "description": "A simple REST server",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yousefamar/rest-server.git"
+  },
+  "keywords": [
+    "rest",
+    "server"
+  ],
+  "author": "Yousef Amar <yousef@amar.io> (http://yousefamar.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yousefamar/rest-server/issues"
+  },
+  "homepage": "https://github.com/yousefamar/rest-server#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4"
+  }
+}
