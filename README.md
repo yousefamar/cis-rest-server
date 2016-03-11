@@ -42,13 +42,17 @@ Lists all entries for a given group and sensor type.
 
 ### /read
 
-Lists all entries for a given group and sensor type between a set time range [from, to].
+Lists all entries for a given group and sensor type between a set time range [from, to]. 
+
+If just a 'to' is provided than everything is loaded from the start until the given time (inclusive). If just 'from' is provided, the data from this given time until now is loaded.
+
+If no parameter is given, all values are loaded. 
 
 #### Parameters:
   - group
   - type
-  - from (inclusive)
-  - to (inclusive)
+  - from (inclusive, optional)
+  - to (inclusive, optional)
 
 #### Response:
   - An array of JSON-encoded DB entries
