@@ -1,8 +1,8 @@
 # CIS REST Server
-A Databox Docker registry front-end, an instance of which is running at http://cis.amar.io/.
+A simple REST server for the [CIS challenge 2016](http://cis.eecs.qmul.ac.uk/IoT2016.html), an instance of which is running at http://cis.amar.io/.
 
 ## Installation
-	git clone https://github.com/yousefamar/rest-server.git
+	git clone https://github.com/yousefamar/cis-rest-server.git
 	cd rest-server
 	npm install
 

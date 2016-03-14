@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongodb = require('mongodb');
 
-mongodb.MongoClient.connect('mongodb://localhost:27017/api', function (err, db) {
+mongodb.MongoClient.connect('mongodb://localhost:27017/cis', function (err, db) {
 	if (err)
 		throw err;
 

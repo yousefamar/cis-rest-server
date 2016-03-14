@@ -1,13 +1,13 @@
 {
-  "name": "rest-server",
+  "name": "cis-rest-server",
   "version": "0.1.0",
-  "description": "A simple REST server",
+  "description": "A simple REST server for the CIS challenge 2016",
   "scripts": {
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yousefamar/rest-server.git"
+    "url": "git+https://github.com/yousefamar/cis-rest-server.git"
   },
   "keywords": [
     "rest",
@@ -16,11 +16,11 @@
   "author": "Yousef Amar <yousef@amar.io> (http://yousefamar.com/)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/yousefamar/rest-server/issues"
+    "url": "https://github.com/yousefamar/cis-rest-server/issues"
   },
-  "homepage": "https://github.com/yousefamar/rest-server#readme",
+  "homepage": "https://github.com/yousefamar/cis-rest-server#readme",
   "dependencies": {
-    "body-parser": "^1.15.0",
+      "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "mongodb": "^2.1.7"
   }
