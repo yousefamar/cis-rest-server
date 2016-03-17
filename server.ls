@@ -14,6 +14,16 @@ throw err if err?
 app = express!
   ..use body-parser.urlencoded extended: false
 
+app.set \views \www
+app.set 'view engine' \jade
+
+app.get  \/:group/:type (req, res) !->
+  do
+    group: req.params.group
+    type:  req.params.type
+  <<< req.query
+    res.render \graph ..
+
 #####################################################################################
 
 app.post \/write (req, res) !->
