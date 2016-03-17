@@ -4,7 +4,109 @@ html
 		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1')
 		title CIS Challenge Data Graph
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js')
+		script(src='https://d3js.org/d3.v3.min.js')
 		//script(src='/socket.io/socket.io.js')
+		style.
+			body {
+				font: 10px sans-serif;
+			}
+
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: #000;
+				shape-rendering: crispEdges;
+			}
+
+			.x.axis path {
+				display: none;
+			}
+
+			.line {
+				fill: none;
+				stroke: steelblue;
+				stroke-width: 1.5px;
+			}
+		script
+			:livescript
+				group = '#{group}'
+				type  = '#{type}'
+				entries <-! $.post \/read do
+					group: group
+					type:  type
+
+				margin =
+					top:    20
+					right:  20
+					bottom: 30
+					left:   50
+				width  = 950 - margin.left - margin.right
+				height = 500 - margin.top - margin.bottom
+
+				x = d3.time.scale!.range   [0 width]
+
+				y = d3.scale.linear!.range [height, 0]
+
+				x-axis = d3.svg.axis!
+					.scale x
+					.orient \bottom
+
+				y-axis = d3.svg.axis!
+					.scale y
+					.orient \left
+
+				line = d3.svg.line!
+					.x -> x new Date it.timestamp
+					.y -> y it.value
+
+				svg = d3.select \body .append \svg
+					.attr \width  width + margin.left + margin.right
+					.attr \height height + margin.top + margin.bottom
+					.append \g
+					.attr \transform "translate(#{margin.left}, #{margin.top})"
+
+				x.domain d3.extent entries, -> new Date it.timestamp
+				y.domain d3.extent entries, -> it.value
+
+				svg.append \g
+					.attr \class 'x axis'
+					.attr \transform "translate(0, #height)"
+					.call x-axis
+
+				svg.append \g
+					.attr \class 'y axis'
+					.call y-axis
+					.append \text
+					.attr \transform 'rotate(-90)'
+					.attr \y 6
+					.attr \dy \.71em
+					.style \text-anchor \end
+					.text \Value
+
+				svg.append \path
+					.datum entries
+					.attr \class \line
+					.attr \d line entries
+
+				set-interval !->
+					entries <-! $.post \/read do
+						group: group
+						type:  type
+
+					x.domain d3.extent entries, -> new Date it.timestamp
+					y.domain d3.extent entries, -> it.value
+					svg = d3.select \body
+
+					svg.select \.x.axis
+						.call x-axis
+					svg.select \.y.axis
+						.call y-axis
+
+					svg.select \path
+						.data entries
+						.enter!.append \path
+						.attr \d line
+				, 1000
 	body
-		h1= group
-		h1= type
+		h1 Group #{group} #{type} sensor

@@ -106,14 +106,16 @@ app.post \/read (req, res) !->
     res.end!
     return
 
-  from = data.from or new Date 0
-  to   = data.to   or new Date!
+  from  = data.from or new Date 0
+  to    = data.to   or new Date!
+  limit = data.limit or 1000
 
   db.collection data.group .find do
     type: data.type
     timestamp:
       $gte: new Date from
       $lte: new Date to
+  .limit limit
   .to-array (err, docs) !->
     throw err if err?
 
