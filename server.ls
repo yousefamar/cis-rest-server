@@ -1,3 +1,5 @@
+#!/usr/bin/env lsc
+
 require! {
   express
   \body-parser
