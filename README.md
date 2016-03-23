@@ -13,6 +13,8 @@ Default port is 8080, but can be overridden using the PORT environment variable,
 
 	PORT=8081 npm start
 
+Browse to `/[group]/[type]` to see a live line chart visualization of the corresponding `value`.
+
 ## API Endpoints
 
 All accept form-encoded POST parameters and return JSON.
