@@ -15,7 +15,7 @@ Default port is 8080, but can be overridden using the PORT environment variable,
 
 ## API Endpoints
 
-All accept form-encoded POST or GET parameters and return JSON.
+All accept form-encoded POST parameters and return JSON.
 
 ### /write
 
