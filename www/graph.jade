@@ -6,7 +6,7 @@ html
 		title CIS Challenge Data Graph
 		script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js')
 		script(src='https://d3js.org/d3.v3.min.js')
-		//script(src='/socket.io/socket.io.js')
+		script(src='/socket.io/socket.io.js')
 		style.
 			body {
 				font: 10px sans-serif;
@@ -30,11 +30,10 @@ html
 			}
 		script
 			:livescript
+				<-! document.add-event-listener \DOMContentLoaded
+
 				group = '#{group}'
 				type  = '#{type}'
-				entries <-! $.post \/read do
-					group: group
-					type:  type
 
 				margin =
 					top:    20
@@ -66,9 +65,6 @@ html
 					.x -> x new Date it.timestamp
 					.y -> y it.value
 
-				x.domain d3.extent entries, -> new Date it.timestamp
-				y.domain d3.extent entries, -> it.value
-
 				svg.append \g
 					.attr \class 'x axis'
 					.attr \transform "translate(0, #height)"
@@ -85,15 +81,11 @@ html
 						.text \Value
 
 				svg.append \path
-					.datum entries
 					.attr \class \line
-					.attr \d line entries
 
-				set-interval !->
-					entries <-! $.post \/read do
-						group: group
-						type:  type
+				var entries
 
+				update-graph = !->
 					x.domain d3.extent entries, -> new Date it.timestamp
 					y.domain d3.extent entries, -> it.value
 
@@ -104,6 +96,18 @@ html
 
 					svg.select \.line
 						.attr \d line entries
-				, 100
+
+				io.connect "#{window.location.protocol}//#{window.location.host}"
+					..on \entries !->
+						entries := it
+						update-graph!
+
+					..on \new-entry !->
+						entries.push it
+						# TODO: Sort and remove duplicates just in case
+						update-graph!
+
+					..emit \listen { group, type }
+
 	body
 		h1 Group #{group} #{type} sensor

@@ -1,21 +1,25 @@
 #!/usr/bin/env lsc
 
 require! {
+  http
   express
   \body-parser
   mongodb
+  \socket.io : io
 }
+
+app = express!
+server = http.create-server app
+io = io server
 
 err, db <-! mongodb.MongoClient.connect \mongodb://localhost:27017/cis-iot-challenge
 
 throw err if err?
 
-
-app = express!
-  ..use body-parser.urlencoded extended: false
-
 app.set \views \www
 app.set 'view engine' \jade
+
+app.use body-parser.urlencoded extended: false
 
 app.get  \/:group/:type (req, res) !->
   do
@@ -23,6 +27,19 @@ app.get  \/:group/:type (req, res) !->
     type:  req.params.type
   <<< req.query
     res.render \graph ..
+
+io .on \connection (socket) !->
+  socket.on \listen (data) !->
+    # TODO: Error handling
+    return unless data.group? and data.type?
+
+    socket.join "#{data.group}/#{data.type}"
+
+    # TODO: Limit in time || count
+    err, docs <-! db.collection data.group .find { data.type } .to-array
+    throw err if err?
+
+    docs |> socket.emit \entries _
 
 #####################################################################################
 
@@ -48,6 +65,8 @@ app.post \/write (req, res) !->
     timestamp: new Date!
     type: data.type
     value: data.value
+
+  io.to "#{data.group}/#{data.type}" .emit \new-entry entry
 
   db.collection data.group .insert-one entry
 
@@ -82,6 +101,7 @@ app.post \/read-all (req, res) !->
     res.end!
     return
 
+  # TODO: Limit in time || count
   err, docs <-! db.collection data.group .find { data.type } .to-array
 
   throw err if err?
@@ -130,4 +150,4 @@ app.post \* (req, res) !->
   res.write-head 404
   res.end!
 
-app.listen (process.env.PORT or 8080)
+server.listen (process.env.PORT or 8080)
