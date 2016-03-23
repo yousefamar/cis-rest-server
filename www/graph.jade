@@ -45,7 +45,6 @@ html
 				height = 500 - margin.top - margin.bottom
 
 				x = d3.time.scale!.range   [0 width]
-
 				y = d3.scale.linear!.range [height, 0]
 
 				x-axis = d3.svg.axis!
@@ -56,15 +55,16 @@ html
 					.scale y
 					.orient \left
 
+				svg = d3.select \body
+					.append \svg
+						.attr \width  width  + margin.left + margin.right
+						.attr \height height + margin.top  + margin.bottom
+							..append \g
+								.attr \transform "translate(#{margin.left}, #{margin.top})"
+
 				line = d3.svg.line!
 					.x -> x new Date it.timestamp
 					.y -> y it.value
-
-				svg = d3.select \body .append \svg
-					.attr \width  width + margin.left + margin.right
-					.attr \height height + margin.top + margin.bottom
-					.append \g
-					.attr \transform "translate(#{margin.left}, #{margin.top})"
 
 				x.domain d3.extent entries, -> new Date it.timestamp
 				y.domain d3.extent entries, -> it.value
@@ -78,11 +78,11 @@ html
 					.attr \class 'y axis'
 					.call y-axis
 					.append \text
-					.attr \transform 'rotate(-90)'
-					.attr \y 6
-					.attr \dy \.71em
-					.style \text-anchor \end
-					.text \Value
+						.attr \transform 'rotate(-90)'
+						.attr \y 6
+						.attr \dy \.71em
+						.style \text-anchor \end
+						.text \Value
 
 				svg.append \path
 					.datum entries
@@ -96,17 +96,14 @@ html
 
 					x.domain d3.extent entries, -> new Date it.timestamp
 					y.domain d3.extent entries, -> it.value
-					svg = d3.select \body
 
 					svg.select \.x.axis
 						.call x-axis
 					svg.select \.y.axis
 						.call y-axis
 
-					svg.select \path
-						.data entries
-						.enter!.append \path
-						.attr \d line
-				, 1000
+					svg.select \.line
+						.attr \d line entries
+				, 100
 	body
 		h1 Group #{group} #{type} sensor
