@@ -8,7 +8,11 @@ html
 		script(src='https://d3js.org/d3.v3.min.js')
 		script(src='/socket.io/socket.io.js')
 		style.
-			body {
+			h1 {
+				color: darkblue;
+			}
+
+			svg {
 				font: 10px sans-serif;
 			}
 
@@ -19,14 +23,15 @@ html
 				shape-rendering: crispEdges;
 			}
 
-			.x.axis path {
-				display: none;
-			}
-
 			.line {
 				fill: none;
 				stroke: steelblue;
 				stroke-width: 1.5px;
+			}
+
+			.slider {
+				display: block;
+				width: 100%;
 			}
 		script
 			:livescript
@@ -39,9 +44,9 @@ html
 					top:    20
 					right:  20
 					bottom: 30
-					left:   50
-				width  = 950 - margin.left - margin.right
-				height = 500 - margin.top - margin.bottom
+					left:   30
+				width  = window.inner-width        - margin.left - margin.right
+				height = 0.5 * window.inner-height - margin.top - margin.bottom
 
 				x = d3.time.scale!.range   [0 width]
 				y = d3.scale.linear!.range [height, 0]
@@ -54,16 +59,16 @@ html
 					.scale y
 					.orient \left
 
-				svg = d3.select \body
+				svg = d3.select \#graph
 					.append \svg
 						.attr \width  width  + margin.left + margin.right
 						.attr \height height + margin.top  + margin.bottom
-							..append \g
-								.attr \transform "translate(#{margin.left}, #{margin.top})"
+					.append \g
+						.attr \transform "translate(#{margin.left}, #{margin.top})"
 
 				line = d3.svg.line!
 					.x -> x new Date it.timestamp
-					.y -> y it.value
+					.y -> y +it.value
 
 				svg.append \g
 					.attr \class 'x axis'
@@ -85,17 +90,28 @@ html
 
 				var entries
 
+				max-count = 100entries
+				max-time  = 4000ms
+
 				update-graph = !->
-					x.domain d3.extent entries, -> new Date it.timestamp
-					y.domain d3.extent entries, -> it.value
+					filtered = entries.slice -max-count .filter ->
+						max-time < 1 or new Date! - (new Date it.timestamp) <= max-time
 
-					svg.select \.x.axis
-						.call x-axis
-					svg.select \.y.axis
-						.call y-axis
+					x.domain d3.extent filtered, -> new Date it.timestamp
+					y.domain d3.extent filtered, -> +it.value
 
-					svg.select \.line
-						.attr \d line entries
+					svg.select \.x.axis .call x-axis
+					svg.select \.y.axis .call y-axis
+					svg.select \.line .attr \d line filtered
+
+				$ \#time-slider  .on \input !->
+					max-time  := $ @ .val!
+					$ \#time-val  .text max-time
+					update-graph!
+				$ \#count-slider .on \input !->
+					max-count := $ @ .val!
+					$ \#count-val .text max-count
+					update-graph!
 
 				io.connect "#{window.location.protocol}//#{window.location.host}"
 					..on \entries !->
@@ -111,3 +127,14 @@ html
 
 	body
 		h1 Group #{group} #{type} sensor
+		#graph
+		p
+			| Time Window: 
+			span#time-val 4000
+			| &nbsp;ms
+			input#time-slider.slider(type='range',  max='100000', value='4000')
+		p
+			| Entry Window: 
+			span#count-val 100
+			| &nbsp;entries
+			input#count-slider.slider(type='range', max='1000',  value='100')
