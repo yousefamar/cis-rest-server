@@ -7,13 +7,20 @@ A simple REST server for the [CIS challenge 2016](http://cis.eecs.qmul.ac.uk/IoT
 	npm install
 
 ## Usage
+
+### Running
+
 	npm start
 
 Default port is 8080, but can be overridden using the PORT environment variable, i.e.:
 
 	PORT=8081 npm start
 
-Browse to `/[group]/[type]` to see a live line chart visualization of the corresponding `value`.
+### Visualization
+
+Currently, rudimentary single line charts are supported. Browse to `/[group]/[type]` to see a live visualization of the corresponding `value` for each entry for that group and sensor type. Data range can be adjusted by time and count using sliders:
+
+![CIS Server Live Line Chart Visualization](https://i.imgur.com/6bKBOFR.gif "CIS Server Live Line Chart Visualization")
 
 ## API Endpoints
 
