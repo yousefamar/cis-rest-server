@@ -1,5 +1,7 @@
 # CIS REST Server
-A simple REST server for the [CIS challenge 2016](http://cis.eecs.qmul.ac.uk/IoT2016.html), an instance of which is running at http://cis.amar.io/.
+A simple REST server for the [CIS challenge 2016](http://cis.eecs.qmul.ac.uk/IoT2016.html), an instance of which is running at https://cis.amar.io/.
+
+Since this is for a small-scale project, no load-balancing is done. If the primary instance can no longer handle your requests, there is an alternate instance running at http://cis3.amar.io/. Note however that that instance uses plain, unencrypted HTTP and that you may get worse latency as the server is in the US.
 
 ## Installation
 	git clone https://github.com/yousefamar/cis-rest-server.git
