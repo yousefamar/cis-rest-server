@@ -71,5 +71,10 @@ If no parameter is given, all values are loaded.
 #### Response:
   - An array of JSON-encoded DB entries
 
+### /time
+
+#### Response:
+  - Server timestamp
+
 ##License
 [ISC](https://opensource.org/licenses/ISC).

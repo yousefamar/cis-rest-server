@@ -146,6 +146,14 @@ app.post \/read (req, res) !->
 
 #####################################################################################
 
+app.post \/time (req, res) !->
+  res.write-head 200 do
+    'Access-Control-Allow-Origin': req.headers.origin or \*
+    'Content-Type': \application/json
+  new Date! |> JSON.stringify |> res.end
+
+#####################################################################################
+
 app.post \* (req, res) !->
   res.write-head 404
   res.end!
