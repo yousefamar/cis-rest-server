@@ -57,13 +57,16 @@ Lists all entries for a given group and sensor type between a set time range [fr
 
 If just a 'to' is provided than everything is loaded from the start until the given time (inclusive). If just 'from' is provided, the data from this given time until now is loaded.
 
-If no parameter is given, all values are loaded. 
+Limit is a numerical limit, i.e. if limit is 1, you only get the latest entry, and if it's 500, you get up to the latest 500 entries.
+
+If no parameter is given, all values are loaded.
 
 #### Parameters:
   - group
   - type
   - from (inclusive, optional)
   - to (inclusive, optional)
+  - limit (optional)
 
 #### Response:
   - An array of JSON-encoded DB entries

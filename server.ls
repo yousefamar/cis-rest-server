@@ -128,7 +128,7 @@ app.post \/read (req, res) !->
 
   from  = data.from or new Date 0
   to    = data.to   or new Date!
-  limit = data.limit or 1000
+  limit = parse-int data.limit or 1000
 
   db.collection data.group .find do
     type: data.type
