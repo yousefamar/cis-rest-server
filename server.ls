@@ -135,6 +135,7 @@ app.post \/read (req, res) !->
     timestamp:
       $gte: new Date from
       $lte: new Date to
+  .sort $natural: -1
   .limit limit
   .to-array (err, docs) !->
     throw err if err?
